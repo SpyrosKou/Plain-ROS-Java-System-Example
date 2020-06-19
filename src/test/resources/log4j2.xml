@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Author: Spyros Koukas-->
+<Configuration status="ERROR">
+    <Appenders>
+        <Console name="STDOUT">
+            <PatternLayout pattern="%d{yy.MM.dd-HH:mm:ss.SSS}[%p]%F(%L)%M-%m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>
