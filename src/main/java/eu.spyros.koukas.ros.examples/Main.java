@@ -16,7 +16,8 @@ import java.util.concurrent.TimeUnit;
  * @author Spyros Koukas
  */
 public final class Main {
-
+    private static final int EXIT_ERROR = 1;
+    private static final int EXIT_OK = 0;
     /**
      * Create a {@link NodeConfiguration}
      *
@@ -92,13 +93,13 @@ public final class Main {
         } catch (final Exception exception) {
             //in case of an exception print the stacktrace and exit with 1 value
             System.err.println(ExceptionUtils.getStackTrace(exception));
-            System.exit(1);
+            System.exit(EXIT_ERROR);
         } finally {
             //In this example the roscore is shutdown after the predefined duration.
             rosCore.shutdown();
         }
         //Exit with value 0.
-        System.exit(0);
+        System.exit(EXIT_OK);
 
     }
 }
