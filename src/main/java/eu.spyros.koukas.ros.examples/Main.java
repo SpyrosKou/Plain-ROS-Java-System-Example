@@ -87,6 +87,7 @@ public final class Main {
                 nodeMainExecutor.shutdownNodeMain(rosJavaPublisherNodeMain);
                 //Shut down the executor
                 nodeMainExecutor.shutdown();
+
             }
         } catch (final Exception exception) {
             //in case of an exception print the stacktrace and exit with 1 value
@@ -96,7 +97,8 @@ public final class Main {
             //In this example the roscore is shutdown after the predefined duration.
             rosCore.shutdown();
         }
-
+        //Exit with value 0.
+        System.exit(0);
 
     }
 }
