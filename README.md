@@ -30,7 +30,7 @@ In order to compile and run this project only jave needs to be installed. [GIT](
 2. Run the project using the generated script:
 `.\build\install\Plain-ROS-Java-System-Example\bin\Plain-ROS-Java-System-Example.bat`
 
-##Quick Instructions for Linux
+## Quick Instructions for Linux
 3. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
 `git clone https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git`
 
