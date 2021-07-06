@@ -2,7 +2,7 @@
 
 ROS Java contains a plain java, standalone version of roscore that does not require any ROS instalation to be present.
 This is an example ROS system running completely on Java with no ROS instalation required.
-It is an example that demonstrates running a roscore  and two nodes.
+It is an example that demonstrates running a roscore and two nodes.
 A java publisher and a java subscriber.
 
 This example project demonstrates how to do the following **programmatically** through the ROS Java API:
@@ -12,7 +12,7 @@ This example project demonstrates how to do the following **programmatically** t
 
 ## Requirements
 
-In order to compile and run this project only jave needs to be installed. [GIT](https://git-scm.com/downloads) also makes getting the source very easy. Links are provided for convenience.
+In order to compile and run this project only Java needs to be installed. [GIT](https://git-scm.com/downloads) also makes getting the source very easy. Links are provided for convenience.
 - [GIT](https://git-scm.com/downloads) , in order to clone the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git)
 - JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 14](https://jdk.java.net/14/)
 - Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 6.5 and ignore any existing installation.
