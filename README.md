@@ -14,8 +14,8 @@ This example project demonstrates how to do the following **programmatically** t
 
 In order to compile and run this project only Java needs to be installed. [GIT](https://git-scm.com/downloads) also makes getting the source very easy. Links are provided for convenience.
 - [GIT](https://git-scm.com/downloads) , in order to clone the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git)
-- JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 14](https://jdk.java.net/14/)
-- Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 6.5 and ignore any existing installation.
+- JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 17](https://jdk.java.net/17/)
+- Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 7.3.3 and ignore any existing installation.
 
 ## Quick Instructions for Windows Power Shell
 2. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
