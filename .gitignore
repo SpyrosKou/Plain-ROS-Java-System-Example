@@ -15,6 +15,9 @@
 # InteliJ files
 .idea/
 
+# build folder
+build
+
 # Package Files #
 *.jar
 *.war
