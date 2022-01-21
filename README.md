@@ -17,33 +17,38 @@ In order to compile and run this project only Java needs to be installed. [GIT](
 - JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 17](https://jdk.java.net/17/)
 - Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 7.3.3 and ignore any existing installation.
 
-## Quick Instructions for Windows Power Shell
-2. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
+## Quick Instructions for Windows [Power Shell](https://github.com/PowerShell/PowerShell/releases/)
+1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
 `git clone https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git`
 
 2. Go into the cloned repository directory:
 `cd .\Plain-ROS-Java-System-Example\`
 
-2. Compile the project and prepare for running:
+3. Compile the project and prepare for running:
 `gradlew installDist`
 
-2. Run the project using the generated script:
+4. Run the project using the generated script:
 `.\build\install\Plain-ROS-Java-System-Example\bin\Plain-ROS-Java-System-Example.bat`
 
+5. Build and run in a single command using the [gradle application plugin](https://docs.gradle.org/current/userguide/application_plugin.html):
+`gradlew run`
+
 ## Quick Instructions for Linux
-3. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
+1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
 `git clone https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git`
 
-3. Go into the cloned repository directory:
+2. Go into the cloned repository directory:
 `cd Plain-ROS-Java-System-Example/`
 
 3. [Add execute permission](http://manpages.ubuntu.com/manpages/focal/man1/chmod.1.html) to gradlew script:
 `sudo chmod +x gradlew`
 
-3. Compile the project and install it locally:
+4. Compile the project and install it locally:
 `gradlew installDist`
 
-3. Run the project using the generated script:
+5. Run the project using the generated script:
 `./build/install/Plain-ROS-Ja-System-Example/bin/Plain-ROS-Java-System-Example`
 
+6. Build and run in a single command using using the [gradle application plugin](https://docs.gradle.org/current/userguide/application_plugin.html):
+`gradlew run`
  
