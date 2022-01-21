@@ -47,7 +47,7 @@ In order to compile and run this project only Java needs to be installed. [GIT](
 `gradlew installDist`
 
 5. Run the project using the generated script:
-`./build/install/Plain-ROS-Ja-System-Example/bin/Plain-ROS-Java-System-Example`
+`./build/install/Plain-ROS-Java-System-Example/bin/Plain-ROS-Java-System-Example`
 
 6. Build and run in a single command using using the [gradle application plugin](https://docs.gradle.org/current/userguide/application_plugin.html):
 `gradlew run`
