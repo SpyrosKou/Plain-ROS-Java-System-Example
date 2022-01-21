@@ -7,27 +7,26 @@ plugins {
 
 mainClassName = "eu.spyros.koukas.ros.examples.Main"
 
-repositories {
-    repositories {
+repositories {//start repositories
         mavenLocal()
+		jcenter()
         mavenCentral()
-        jcenter()
         maven {
             url "https://github.com/rosjava/rosjava_mvn_repo/raw/master"
         }
-    }
-}
+
+}//end repositories
 
 group 'eu.spyros.koukas.examples.rosjava'
 version = '0.1-SNAPSHOT'
 
 
-dependencies {
+dependencies {//start dependencies
 
-    implementation 'org.ros.rosjava_core:rosjava:[0.3,0.4)'
+    implementation 'org.ros.rosjava_core:rosjava:0.3.6'
 
 
-    implementation 'org.apache.commons:commons-lang3:3.4'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'org.apache.commons:commons-collections4:4.1'
     implementation 'org.apache.commons:commons-configuration2:2.3'
 
@@ -35,12 +34,5 @@ dependencies {
 
     implementation 'org.ros.rosjava_bootstrap:message_generation:0.3.3'
     implementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
-
-
-
-
-
-}
-
-
-
+	
+}//end dependencies
