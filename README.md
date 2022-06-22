@@ -2,20 +2,21 @@
 
 ROS Java contains a plain java, standalone version of roscore that does not require any ROS instalation to be present.
 This is an example ROS system running completely on Java with no ROS instalation required.
-It is an example that demonstrates running a roscore and two nodes.
-A java publisher and a java subscriber.
+It is an example that demonstrates running a roscore and four rosjava ROS nodes.
+A Topic Publisher, a ROS Topic Subscriber, a ROS Service Server and a Service Client. 
 
 This example project demonstrates how to do the following **programmatically** through the ROS Java API:
 1. Create, start and shutdown the Java roscore 
-1. Create, start and shutdown ROS nodes
-1. Publish and subscribe to a ROS topic
+2. Create, start and shutdown ROS nodes
+3. Publish and subscribe to a ROS topic
+4. Create a ROS Service Server and call it from a ROS Service Client
 
 ## Requirements
 
 In order to compile and run this project only Java needs to be installed. [GIT](https://git-scm.com/downloads) also makes getting the source very easy. Links are provided for convenience.
 - [GIT](https://git-scm.com/downloads) , in order to clone the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git)
 - JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 17](https://jdk.java.net/17/)
-- Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 7.3.3 and ignore any existing installation.
+- Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 7.4.2 and ignore any existing installation.
 
 ## Quick Instructions for Windows [Power Shell](https://github.com/PowerShell/PowerShell/releases/)
 1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
