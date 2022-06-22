@@ -34,5 +34,6 @@ dependencies {//start dependencies
 
     implementation 'org.ros.rosjava_bootstrap:message_generation:0.3.3'
     implementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
+    implementation 'org.ros.rosjava_messages:rosjava_test_msgs:0.3.0'
 	
 }//end dependencies

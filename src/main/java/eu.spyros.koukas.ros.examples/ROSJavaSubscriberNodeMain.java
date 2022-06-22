@@ -41,7 +41,7 @@ public final class ROSJavaSubscriberNodeMain extends AbstractNodeMain {
 
     /**
      * @param rosTopicName the name of the topic to subscribe
-     * @param rosNodeName  he name of the ROS node
+     * @param rosNodeName the name of the ROS node
      */
     public ROSJavaSubscriberNodeMain(final java.lang.String rosTopicName, final java.lang.String rosNodeName) {
         //Let's require that rosNodeName and rosTopicName are not null to eagerly identify this error
