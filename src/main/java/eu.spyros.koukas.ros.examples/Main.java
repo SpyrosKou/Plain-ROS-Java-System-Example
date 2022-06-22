@@ -57,10 +57,17 @@ public final class Main {
      * @param args
      */
     public static void main(final String[] args) {
+        //Services
+        final String serverName = "/spyros/test/server/";
+        final String clientName = "/spyros/test/client/";
+        final String serviceName = "/spyros/test/service/sum";
 
+        //Topics
         final String publisherName = "/spyros/test/publisher/";
         final String subscriberName = "/spyros/test/subscriber/";
         final String topicName = "/spyros/test/topic/";
+
+        //Common
         final String rosHostIp = "127.0.0.1";
         final int rosHostPort = 11311;
 
@@ -82,15 +89,38 @@ public final class Main {
                 //An executor is needed to spawn ROS nodes from Java.
                 final NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
 
-                // Create a publisher for the specified topic name and publisher name
-                final ROSJavaPublisherNodeMain rosJavaPublisherNodeMain = new ROSJavaPublisherNodeMain(topicName, publisherName);
-                final NodeConfiguration publisherNodeConfiguration = getNodeConfiguration(rosHostIp, publisherName, rosMasterUri);
-                nodeMainExecutor.execute(rosJavaPublisherNodeMain, publisherNodeConfiguration);
+//                Note that all the nodes below run in parallel
 
-                // Create a subscriber for the specified topic name and publisher name
-                final ROSJavaSubscriberNodeMain rosJavaSubscriberNodeMain = new ROSJavaSubscriberNodeMain(topicName, subscriberName);
-                final NodeConfiguration subscriberNodeConfiguration = getNodeConfiguration(rosHostIp, subscriberName, rosMasterUri);
-                nodeMainExecutor.execute(rosJavaSubscriberNodeMain, subscriberNodeConfiguration);
+                    // Create a ROS Service Server for the specified service name and ROS Service Server Node name
+                    final ROSJavaServerNodeMain serviceServerNodeMain = new ROSJavaServerNodeMain(serviceName, serverName);
+                    final NodeConfiguration serviceServerNodeConfiguration = getNodeConfiguration(rosHostIp, serverName, rosMasterUri);
+                    nodeMainExecutor.execute(serviceServerNodeMain, serviceServerNodeConfiguration);
+
+
+                    //Let the main thread sleep for 2 seconds to be sure that service server is published
+                    try {
+                        Thread.sleep(2_000);
+                    } catch (final InterruptedException interruptedException) {
+                        //In this example any interruptedException is ignored
+                    }
+
+                    // Create a ROS  Service Client for the specified service name and ROS Service Client Node name
+                    final ROSJavaClientNodeMain serviceClientNodeMain = new ROSJavaClientNodeMain(serviceName, clientName);
+                    final NodeConfiguration serviceClientNodeConfiguration = getNodeConfiguration(rosHostIp, clientName, rosMasterUri);
+                    nodeMainExecutor.execute(serviceClientNodeMain, serviceClientNodeConfiguration);
+
+
+                    // Create a publisher for the specified topic name and publisher name
+                    final ROSJavaPublisherNodeMain topicPublisherNodeMain = new ROSJavaPublisherNodeMain(topicName, publisherName);
+                    final NodeConfiguration topicPublisherNodeConfiguration = getNodeConfiguration(rosHostIp, publisherName, rosMasterUri);
+                    nodeMainExecutor.execute(topicPublisherNodeMain, topicPublisherNodeConfiguration);
+
+                    // Create a subscriber for the specified topic name and publisher name
+                    final ROSJavaSubscriberNodeMain topicSubscriberNodeMain = new ROSJavaSubscriberNodeMain(topicName, subscriberName);
+                    final NodeConfiguration topicSubscriberNodeConfiguration = getNodeConfiguration(rosHostIp, subscriberName, rosMasterUri);
+                    nodeMainExecutor.execute(topicSubscriberNodeMain, topicSubscriberNodeConfiguration);
+
+
 
                 //Let the main thread sleep for 30 seconds
                 try {
@@ -98,10 +128,14 @@ public final class Main {
                 } catch (final InterruptedException interruptedException) {
                     //In this example any interruptedException is ignored
                 }
+                //Shut down client
+                nodeMainExecutor.shutdownNodeMain(serviceClientNodeMain);
                 //Shut down subscriber
-                nodeMainExecutor.shutdownNodeMain(rosJavaSubscriberNodeMain);
+                nodeMainExecutor.shutdownNodeMain(topicSubscriberNodeMain);
                 //Shut down publisher
-                nodeMainExecutor.shutdownNodeMain(rosJavaPublisherNodeMain);
+                nodeMainExecutor.shutdownNodeMain(topicPublisherNodeMain);
+                //Shut down server
+                nodeMainExecutor.shutdownNodeMain(serviceServerNodeMain);
                 //Shut down the executor
                 nodeMainExecutor.shutdown();
 
