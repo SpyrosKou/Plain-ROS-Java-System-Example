@@ -55,7 +55,7 @@ In order to compile and run this project only Java needs to be installed. [GIT](
 6. Build and run in a single command using using the [gradle application plugin](https://docs.gradle.org/current/userguide/application_plugin.html):
 `gradlew run`
 
-##Using with an existing, external, non-rosjava roscore
+## Using with an existing, external, non-rosjava roscore
 It is possible to use rosjava to run rosjava nodes in an environment where a ros system is already running. E.g. a cpp noetic ros instance.
 An example on how to run rosjava nodes programmatically without starting roscore is provided in [MainExternalRos](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternalRos.java)
 Note that if a roscore is not running, then this example will not run correctly.
