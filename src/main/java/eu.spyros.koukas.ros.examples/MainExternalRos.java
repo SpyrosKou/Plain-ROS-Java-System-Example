@@ -75,7 +75,7 @@ public final class MainExternalRos {
         final String topicName = "/spyros/test/topic/";
 
         //No need to start Roscore, since we assume an external roscore is running.
-        final NodeMainExecutor nodeMainExecutor;
+        NodeMainExecutor nodeMainExecutor=null;
         try {
             final URI rosMasterUri = new URI(rosMasterUriEnv);
 
