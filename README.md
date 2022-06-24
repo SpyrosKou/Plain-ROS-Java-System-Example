@@ -57,7 +57,7 @@ In order to compile and run this project only Java needs to be installed. [GIT](
 
 ## Using with an existing, external, non-rosjava roscore
 It is possible to use rosjava to run rosjava nodes in an environment where a ros system is already running. E.g. a cpp noetic ros instance.
-An example on how to run rosjava nodes programmatically without starting roscore is provided in [MainExternalRos](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternalRos.java)
+An example on how to run rosjava nodes programmatically without starting roscore is provided in [MainExternal](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternal.java)
 Note that if a roscore is not running, then this example will not run correctly.
 In order to use it do the following:
 
@@ -70,7 +70,7 @@ The following commands assumes the example and roscore run in `127.0.0.1` aka `l
 Run the following:
 `roscore`   
 
-3. With the roscore already started externaly run [MainExternalRos](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternalRos.java)
-4. You can start directly the [MainExternalRos](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternalRos.java) from the gradle by running:
+3. With the roscore already started externaly run [MainExternal](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternal.java)
+4. You can start directly the [MainExternal](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternal.java) from the gradle by running:
 `./gradlew runWithExternalRos`
 
