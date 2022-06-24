@@ -23,7 +23,7 @@ version = '0.1-SNAPSHOT'
 
 task('runWithExternalRos', dependsOn: 'classes', type: JavaExec) {
     group 'application'
-    mainClass = 'eu.spyros.koukas.ros.examples.MainExternalRos'
+    mainClass = 'eu.spyros.koukas.ros.examples.MainExternal'
     classpath = sourceSets.main.runtimeClasspath
 }
 
