@@ -21,6 +21,12 @@ group 'eu.spyros.koukas.examples.rosjava'
 version = '0.1-SNAPSHOT'
 
 
+task('runWithExternalRos', dependsOn: 'classes', type: JavaExec) {
+    group 'application'
+    mainClass = 'eu.spyros.koukas.ros.examples.MainExternalRos'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 dependencies {//start dependencies
 
     implementation 'org.ros.rosjava_core:rosjava:0.3.6'
