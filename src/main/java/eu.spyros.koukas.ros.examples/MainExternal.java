@@ -19,11 +19,13 @@ package eu.spyros.koukas.ros.examples;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.ros.RosCore;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Main Executable class to run with an external roscore
@@ -31,7 +33,7 @@ import java.net.URI;
  *
  * @author Spyros Koukas
  */
-public final class MainExternalRos {
+public final class MainExternal {
     private static final int EXIT_ERROR = 1;
     private static final int EXIT_OK = 0;
     private static final String ROS_MASTER_URI = "ROS_MASTER_URI";

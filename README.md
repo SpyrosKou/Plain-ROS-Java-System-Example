@@ -60,8 +60,9 @@ It is possible to use rosjava to run rosjava nodes in an environment where a ros
 An example on how to run rosjava nodes programmatically without starting roscore is provided in [MainExternalRos](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternalRos.java)
 Note that if a roscore is not running, then this example will not run correctly.
 In order to use it do the following:
-1. Set `ROS_MASTER_URI` and `ROS_IP` environment variables. Both these variables are needed.
+1. Set `ROS_MASTER_URI` and `ROS_IP` environment variables. Both these variables are needed. If these environment variables are missing, you will see some errors in step 4 below. 
 2. Start roscore
 3. With the roscore already started externaly run [MainExternalRos](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternalRos.java)
+4. You can start directly the [MainExternalRos](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternalRos.java) from the gradle by running:
+`./gradlew runWithExternalRos`
 
- 
