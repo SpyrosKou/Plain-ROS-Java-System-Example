@@ -18,7 +18,7 @@ This repository also provides an example that demonstrates how to run rosjava wi
 In order to compile and run this project only Java needs to be installed. [GIT](https://git-scm.com/downloads) also makes getting the source very easy. Links are provided for convenience.
 - [GIT](https://git-scm.com/downloads) , in order to clone the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git)
 - JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 17](https://jdk.java.net/17/)
-- Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 7.4.2 and ignore any existing installation.
+- Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 7.5 and ignore any existing installation.
 
 ## Quick Instructions for Windows [Power Shell](https://github.com/PowerShell/PowerShell/releases/)
 1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
