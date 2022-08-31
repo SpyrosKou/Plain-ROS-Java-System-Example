@@ -11,7 +11,8 @@ This example project demonstrates how to do the following **programmatically** t
 3. Publish and subscribe to a ROS topic
 4. Create a ROS Service Server and call it from a ROS Service Client
 
-This repository also provides an example that demonstrates how to run rosjava with an another roscore. E.g. cpp roscore from **ROS noetic**. 
+This repository also provides an example that demonstrates how to run rosjava with an another roscore. E.g. cpp roscore from **ROS noetic**.    
+A version of this repository that uses **custom ROS messages** is available [here](https://github.com/SpyrosKou/Custom-Messages-ROS-Java-System-Example.git).
 
 ## Requirements
 
