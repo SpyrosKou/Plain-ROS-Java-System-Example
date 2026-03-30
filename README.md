@@ -18,8 +18,10 @@ A version of this repository that uses **custom ROS messages** is available [her
 
 In order to compile and run this project only Java needs to be installed. [GIT](https://git-scm.com/downloads) also makes getting the source very easy. Links are provided for convenience.
 - [GIT](https://git-scm.com/downloads) , in order to clone the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git)
-- JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 17](https://jdk.java.net/17/)
+- JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 21](https://jdk.java.net/21/) or later
 - Gradle, is used for project compilation. Installing it is not required. The included Gradle wrapper will automatically download the configured Gradle version.
+
+Before running the Gradle commands below, make sure `JAVA_HOME` points to a JDK 21 or later installation and that `java -version` reports Java 21 or later.
 
 ## Quick Instructions for Windows [Power Shell](https://github.com/PowerShell/PowerShell/releases/)
 1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
