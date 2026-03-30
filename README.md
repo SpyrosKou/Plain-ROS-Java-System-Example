@@ -19,7 +19,7 @@ A version of this repository that uses **custom ROS messages** is available [her
 In order to compile and run this project only Java needs to be installed. [GIT](https://git-scm.com/downloads) also makes getting the source very easy. Links are provided for convenience.
 - [GIT](https://git-scm.com/downloads) , in order to clone the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git)
 - JDK, the [project](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git) has been developed and tested using [JDK 17](https://jdk.java.net/17/)
-- Gradle, is used for project compilation. Installing it is not required. Following the instructions below will automatically download gradle 7.5 and ignore any existing installation.
+- Gradle, is used for project compilation. Installing it is not required. The included Gradle wrapper will automatically download the configured Gradle version.
 
 ## Quick Instructions for Windows [Power Shell](https://github.com/PowerShell/PowerShell/releases/)
 1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
@@ -29,13 +29,14 @@ In order to compile and run this project only Java needs to be installed. [GIT](
 `cd .\Plain-ROS-Java-System-Example\`
 
 3. Compile the project and prepare for running:
-`gradlew installDist`
+`.\gradlew.bat installDist`
 
 4. Run the project using the generated script:
 `.\build\install\Plain-ROS-Java-System-Example\bin\Plain-ROS-Java-System-Example.bat`
+The demo runs for about 30 seconds and prints ROS publisher, subscriber and service activity to the console.
 
 5. Build and run in a single command using the [gradle application plugin](https://docs.gradle.org/current/userguide/application_plugin.html):
-`gradlew run`
+`.\gradlew.bat run`
 
 ## Quick Instructions for Linux
 1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
@@ -48,13 +49,14 @@ In order to compile and run this project only Java needs to be installed. [GIT](
 `sudo chmod +x gradlew`
 
 4. Compile the project and install it locally:
-`gradlew installDist`
+`./gradlew installDist`
 
 5. Run the project using the generated script:
 `./build/install/Plain-ROS-Java-System-Example/bin/Plain-ROS-Java-System-Example`
+The demo runs for about 30 seconds and prints ROS publisher, subscriber and service activity to the console.
 
 6. Build and run in a single command using using the [gradle application plugin](https://docs.gradle.org/current/userguide/application_plugin.html):
-`gradlew run`
+`./gradlew run`
 
 ## Using with an existing, external, non-rosjava roscore
 It is possible to use rosjava to run rosjava nodes in an environment where a ros system is already running. E.g. a cpp noetic ros instance.
@@ -65,7 +67,10 @@ In order to use it do the following:
 1. Set `ROS_MASTER_URI` and `ROS_IP` environment variables. Both these variables are needed. If these environment variables are missing, you will see some errors in step 4 below.
 The following commands assumes the example and roscore run in `127.0.0.1` aka `localhost`.   
 `export ROS_MASTER_URI=http://127.0.0.1:11311`   
-`export ROS_IP=http://127.0.0.1:11311`   
+`export ROS_IP=127.0.0.1`   
+On Windows PowerShell the equivalent commands are:   
+`$env:ROS_MASTER_URI='http://127.0.0.1:11311'`   
+`$env:ROS_IP='127.0.0.1'`   
 
 2. Start roscore
 Run the following:
@@ -74,4 +79,20 @@ Run the following:
 3. With the roscore already started externaly run [MainExternal](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternal.java)
 4. You can start directly the [MainExternal](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example/blob/main/src/main/java/eu.spyros.koukas.ros.examples/MainExternal.java) from the gradle by running:
 `./gradlew runWithExternalRos`
+On Windows PowerShell use:
+`.\gradlew.bat runWithExternalRos`
+
+## High-Level Changelog
+- 2020-05-15: Initial repository setup with the project README, license, and ignore rules.
+- 2020-06-19: First runnable standalone rosjava example landed with the Gradle application build, wrapper scripts, the main launcher, and ROS topic publisher/subscriber nodes. The Gradle wrapper moved from `6.4.1` to `6.5` the same day.
+- 2020-06-21: Small cleanup pass with license and ignore updates, minor code polish, and clearer README guidance around using the Gradle wrapper.
+- 2020-06-21 to 2021-07-06: Quiet period of 380 days. Only a README typo fix landed during this stretch.
+- 2021-07-06 to 2022-01-21: Quiet period of 199 days. The next update was a maintenance refresh: dependencies were updated, the documented tested JDK moved from `14` to `17`, and Gradle moved from `6.5` to `7.3.3`.
+- 2022-06-21: Tooling update only. Gradle moved from `7.3.3` to `7.4.2`.
+- 2022-06-22: Major feature expansion. The example set grew from topic pub/sub to include a ROS service server and a ROS service client, with the required extra rosjava message dependency.
+- 2022-06-24: Added the external-roscore workflow example and a dedicated Gradle task for running rosjava against an already running non-rosjava ROS master.
+- 2022-07-19: Tooling update only. Gradle moved from `7.4.2` to `7.5`.
+- 2022-08-31: Small maintenance and documentation update. Gradle moved from `7.5` to `7.5.1`, and the README added a link to the related custom ROS messages example repository.
+- 2022-08-31 to 2026-03-30: Quiet period of 1307 days. The next committed change was a maintenance revival rather than a new feature wave.
+- 2026-03-30: Dependency and build refresh. Gradle moved from `7.5.1` to `8.14.4`, the rosjava dependency moved to `0.4.1.1`, `message_generation` moved to `0.3.9`, `commons-configuration2` moved to `2.10.1`, `commons-lang3` moved to `3.18.0`, and the project switched to a new GitHub-hosted Maven repository.
 
