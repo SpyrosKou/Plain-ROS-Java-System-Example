@@ -20,7 +20,6 @@ package eu.spyros.koukas.ros.examples;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
 import org.ros.concurrent.CancellableLoop;
 import org.ros.exception.RemoteException;
 import org.ros.exception.RosRuntimeException;
@@ -80,11 +79,11 @@ public final class ROSJavaClientNodeMain extends AbstractNodeMain {
     @Override
     public final void onStart(final ConnectedNode connectedNode) {
 
-        final Log log = connectedNode.getLog();
+        final var log = connectedNode.getLog();
 
-        //Create a client, for the rosServiceName, that is of type rosjava_test_msgs.AddTwoInts._TYPE.
-        //ROS Java service definition interfaces  have a public static String _TYPE field where the ros type is saved.
-        //Also ROS Java service definition interfaces have a public static String _DEFINITION filed where the source of the service is saved.
+        // Create a client for rosServiceName of type rosjava_test_msgs.AddTwoInts._TYPE.
+        // In this example the startup code waits for the service server registration first,
+        // so the client logic here can stay simple.
         try {
             final ServiceClient<AddTwoIntsRequest, AddTwoIntsResponse> serviceClient = connectedNode.newServiceClient(this.rosServiceName, rosjava_test_msgs.AddTwoInts._TYPE);
             serviceClient.isConnected();

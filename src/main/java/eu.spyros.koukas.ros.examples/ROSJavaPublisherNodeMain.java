@@ -18,7 +18,6 @@ package eu.spyros.koukas.ros.examples;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
 import org.ros.concurrent.CancellableLoop;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
@@ -70,7 +69,7 @@ public final class ROSJavaPublisherNodeMain extends AbstractNodeMain {
         //Note that it is the responsibility of the programmer to provide the correct type to the publisher
         final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(this.rosTopicName, std_msgs.String._TYPE);
 
-        final Log log = connectedNode.getLog();
+        final var log = connectedNode.getLog();
 
         //The CancellableLoop will run again and again until the node is stopped.
         connectedNode.executeCancellableLoop(new CancellableLoop() {

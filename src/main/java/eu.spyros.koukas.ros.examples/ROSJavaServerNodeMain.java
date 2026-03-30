@@ -18,14 +18,17 @@ package eu.spyros.koukas.ros.examples;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
+import org.ros.node.RosLog;
+import org.ros.node.service.CountDownServiceServerListener;
 import org.ros.node.service.ServiceServer;
 import rosjava_test_msgs.AddTwoInts;
 import rosjava_test_msgs.AddTwoIntsRequest;
 import rosjava_test_msgs.AddTwoIntsResponse;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * An object of this class will be a ROS Node with the given rosNodeName that will server a specific service at the specified graph name
@@ -36,8 +39,10 @@ import rosjava_test_msgs.AddTwoIntsResponse;
 public final class ROSJavaServerNodeMain extends AbstractNodeMain {
     private final String rosServiceName;
     private final String rosNodeName;
-    private final long SLEEP_DURATION_MILLIS = 1000;
-    private Log log;
+    // This listener is used by the demo entrypoints to wait until the server is registered with the ROS master.
+    private final CountDownServiceServerListener<AddTwoIntsRequest, AddTwoIntsResponse> serviceServerListener =
+            CountDownServiceServerListener.newDefault();
+    private RosLog log;
 
     /**
      * @param rosServiceName the name of the topic to publish
@@ -95,9 +100,18 @@ public final class ROSJavaServerNodeMain extends AbstractNodeMain {
         //2. The service type which is provided by the ROS Java Service Definition in the _TYPE static variable.
         //3. The service server logic that reads the request and provides the response. In this case it is implemented in createResponse
         final ServiceServer<AddTwoIntsRequest, AddTwoIntsResponse> serviceServer = connectedNode.newServiceServer(this.rosServiceName, AddTwoInts._TYPE, this::createResponse);
+        serviceServer.addListener(this.serviceServerListener);
 
 
         //Log the creation of the server for demonstration purposes.
         this.log.info("Created ROS Service Server[" + serviceServer.getName() + "] in URI:" + serviceServer.getUri());
+    }
+
+    /**
+     * Wait until the ROS master confirms that this server has been registered.
+     * This is useful in demos where a client is started immediately afterwards.
+     */
+    public boolean awaitRegistration(final long timeout, final TimeUnit timeUnit) throws InterruptedException {
+        return this.serviceServerListener.awaitMasterRegistrationSuccess(timeout, timeUnit);
     }
 }

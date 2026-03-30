@@ -19,7 +19,7 @@ package eu.spyros.koukas.ros.examples;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.ros.RosCore;
+import org.ros.exception.RosRuntimeException;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
@@ -38,6 +38,8 @@ public final class MainExternal {
     private static final int EXIT_OK = 0;
     private static final String ROS_MASTER_URI = "ROS_MASTER_URI";
     private static final String ROS_IP = "ROS_IP";
+    private static final long SERVICE_REGISTRATION_TIMEOUT_MILLIS = 15_000;
+    private static final long DEMO_DURATION_MILLIS = 30_000;
 
     /**
      * Create a {@link NodeConfiguration}
@@ -45,7 +47,6 @@ public final class MainExternal {
      * @param rosHostIp    the ip of the computer running the node
      * @param nodeName     the name of the node
      * @param rosMasterUri the uri of the rosMaster that this node should connect to
-     *
      * @return the completed {@link NodeConfiguration} with the arguments provided
      */
     private static final NodeConfiguration getNodeConfiguration(final String rosHostIp, final String nodeName, final URI rosMasterUri) {
@@ -77,71 +78,64 @@ public final class MainExternal {
         final String topicName = "/spyros/test/topic/";
 
         //No need to start Roscore, since we assume an external roscore is running.
-        NodeMainExecutor nodeMainExecutor=null;
         try {
             final URI rosMasterUri = new URI(rosMasterUriEnv);
 
-            //An executor is needed to spawn ROS nodes from Java.
-            nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
-
-//                Note that all the nodes below run in parallel
-
-            // Create a ROS Service Server for the specified service name and ROS Service Server Node name
-            final ROSJavaServerNodeMain serviceServerNodeMain = new ROSJavaServerNodeMain(serviceName, serverName);
-            final NodeConfiguration serviceServerNodeConfiguration = getNodeConfiguration(rosHostIp, serverName, rosMasterUri);
-            nodeMainExecutor.execute(serviceServerNodeMain, serviceServerNodeConfiguration);
-
-
-            //Let the main thread sleep for 2 seconds to be sure that service server is published
+            // An executor is needed to spawn ROS nodes from Java.
+            final NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
             try {
-                Thread.sleep(2_000);
-            } catch (final InterruptedException interruptedException) {
-                //In this example any interruptedException is ignored
+                // Note that all the nodes below run in parallel once executed by the executor.
+
+                // Create a ROS Service Server for the specified service name and node name.
+                final ROSJavaServerNodeMain serviceServerNodeMain = new ROSJavaServerNodeMain(serviceName, serverName);
+                final NodeConfiguration serviceServerNodeConfiguration = getNodeConfiguration(rosHostIp, serverName, rosMasterUri);
+                nodeMainExecutor.execute(serviceServerNodeMain, serviceServerNodeConfiguration);
+
+                // Wait until the service is registered before starting the client.
+                final boolean serviceRegistered = serviceServerNodeMain.awaitRegistration(SERVICE_REGISTRATION_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+                if (!serviceRegistered) {
+                    throw new RosRuntimeException("Timed out while waiting for service server registration.");
+                }
+
+                // Create a ROS Service Client for the specified service name and node name.
+                final ROSJavaClientNodeMain serviceClientNodeMain = new ROSJavaClientNodeMain(serviceName, clientName);
+                final NodeConfiguration serviceClientNodeConfiguration = getNodeConfiguration(rosHostIp, clientName, rosMasterUri);
+                nodeMainExecutor.execute(serviceClientNodeMain, serviceClientNodeConfiguration);
+
+
+                // Create a publisher for the specified topic name and publisher name.
+                final ROSJavaPublisherNodeMain topicPublisherNodeMain = new ROSJavaPublisherNodeMain(topicName, publisherName);
+                final NodeConfiguration topicPublisherNodeConfiguration = getNodeConfiguration(rosHostIp, publisherName, rosMasterUri);
+                nodeMainExecutor.execute(topicPublisherNodeMain, topicPublisherNodeConfiguration);
+
+                // Create a subscriber for the specified topic name and subscriber name.
+                final ROSJavaSubscriberNodeMain topicSubscriberNodeMain = new ROSJavaSubscriberNodeMain(topicName, subscriberName);
+                final NodeConfiguration topicSubscriberNodeConfiguration = getNodeConfiguration(rosHostIp, subscriberName, rosMasterUri);
+                nodeMainExecutor.execute(topicSubscriberNodeMain, topicSubscriberNodeConfiguration);
+
+                // Keep the demo alive long enough to observe service calls and topic traffic.
+                try {
+                    Thread.sleep(DEMO_DURATION_MILLIS);
+                } catch (final InterruptedException interruptedException) {
+                    //In this example any interruptedException is ignored
+                }
+
+                // For demonstration purposes we explicitly shut down each node main.
+                // This is not strictly required because nodeMainExecutor.shutdown() below would also stop them.
+                nodeMainExecutor.shutdownNodeMain(serviceClientNodeMain);
+                nodeMainExecutor.shutdownNodeMain(topicSubscriberNodeMain);
+                nodeMainExecutor.shutdownNodeMain(topicPublisherNodeMain);
+                nodeMainExecutor.shutdownNodeMain(serviceServerNodeMain);
+            } finally {
+                // Shutting down the executor is still useful as the final cleanup step.
+                nodeMainExecutor.shutdown();
             }
-
-            // Create a ROS  Service Client for the specified service name and ROS Service Client Node name
-            final ROSJavaClientNodeMain serviceClientNodeMain = new ROSJavaClientNodeMain(serviceName, clientName);
-            final NodeConfiguration serviceClientNodeConfiguration = getNodeConfiguration(rosHostIp, clientName, rosMasterUri);
-            nodeMainExecutor.execute(serviceClientNodeMain, serviceClientNodeConfiguration);
-
-
-            // Create a publisher for the specified topic name and publisher name
-            final ROSJavaPublisherNodeMain topicPublisherNodeMain = new ROSJavaPublisherNodeMain(topicName, publisherName);
-            final NodeConfiguration topicPublisherNodeConfiguration = getNodeConfiguration(rosHostIp, publisherName, rosMasterUri);
-            nodeMainExecutor.execute(topicPublisherNodeMain, topicPublisherNodeConfiguration);
-
-            // Create a subscriber for the specified topic name and publisher name
-            final ROSJavaSubscriberNodeMain topicSubscriberNodeMain = new ROSJavaSubscriberNodeMain(topicName, subscriberName);
-            final NodeConfiguration topicSubscriberNodeConfiguration = getNodeConfiguration(rosHostIp, subscriberName, rosMasterUri);
-            nodeMainExecutor.execute(topicSubscriberNodeMain, topicSubscriberNodeConfiguration);
-
-
-            //Let the main thread sleep for 30 seconds
-            try {
-                Thread.sleep(30_000);
-            } catch (final InterruptedException interruptedException) {
-                //In this example any interruptedException is ignored
-            }
-            //Shut down client
-            nodeMainExecutor.shutdownNodeMain(serviceClientNodeMain);
-            //Shut down subscriber
-            nodeMainExecutor.shutdownNodeMain(topicSubscriberNodeMain);
-            //Shut down publisher
-            nodeMainExecutor.shutdownNodeMain(topicPublisherNodeMain);
-            //Shut down server
-            nodeMainExecutor.shutdownNodeMain(serviceServerNodeMain);
-            //Shut down the executor
-            nodeMainExecutor.shutdown();
 
 
         } catch (final Exception exception) {
             //in case of an exception print the stacktrace and exit with EXIT_ERROR(1) value
             System.err.println(ExceptionUtils.getStackTrace(exception));
             System.exit(EXIT_ERROR);
-        } finally {
-            if (nodeMainExecutor != null) {
-                nodeMainExecutor.shutdown();
-            }
         }
         //Exit with value EXIT_OK(0).
         System.exit(EXIT_OK);

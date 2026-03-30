@@ -18,6 +18,7 @@ package eu.spyros.koukas.ros.examples;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.ros.RosCore;
+import org.ros.exception.RosRuntimeException;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
@@ -35,6 +36,10 @@ import java.util.concurrent.TimeUnit;
 public final class Main {
     private static final int EXIT_ERROR = 1;
     private static final int EXIT_OK = 0;
+    private static final long ROSCORE_START_TIMEOUT_MILLIS = 2_000;
+    private static final long SERVICE_REGISTRATION_TIMEOUT_MILLIS = 15_000;
+    private static final long DEMO_DURATION_MILLIS = 30_000;
+
     /**
      * Create a {@link NodeConfiguration}
      *
@@ -77,69 +82,65 @@ public final class Main {
         final RosCore rosCore = RosCore.newPublic(rosHostPort);
         //This will start the created java ROS Core.
         rosCore.start();
-
-
         try {
             final URI rosMasterUri = new URI("http://127.0.0.1:11311");
 
-            //Before proceeding any further we need to make sure that the roscore is already started.
-            //The following line will wait for the roscore to start for a maximum of 2 seconds
-            final boolean started = rosCore.awaitStart(2_000, TimeUnit.MILLISECONDS);
+            // Before proceeding any further we need to make sure that the roscore is already started.
+            final boolean started = rosCore.awaitStart(ROSCORE_START_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 
             if (started) {
                 //An executor is needed to spawn ROS nodes from Java.
                 final NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
+                try {
+                    // Note that all the nodes below run in parallel once executed by the executor.
 
-//                Note that all the nodes below run in parallel
-
-                    // Create a ROS Service Server for the specified service name and ROS Service Server Node name
+                    // Create a ROS Service Server for the specified service and node name.
                     final ROSJavaServerNodeMain serviceServerNodeMain = new ROSJavaServerNodeMain(serviceName, serverName);
                     final NodeConfiguration serviceServerNodeConfiguration = getNodeConfiguration(rosHostIp, serverName, rosMasterUri);
                     nodeMainExecutor.execute(serviceServerNodeMain, serviceServerNodeConfiguration);
 
-
-                    //Let the main thread sleep for 2 seconds to be sure that service server is published
-                    try {
-                        Thread.sleep(2_000);
-                    } catch (final InterruptedException interruptedException) {
-                        //In this example any interruptedException is ignored
+                    // For tutorial purposes we wait explicitly for the service to be visible to the ROS master.
+                    // This keeps the client example simple and avoids hiding the startup race inside the client node.
+                    final boolean serviceRegistered = serviceServerNodeMain.awaitRegistration(SERVICE_REGISTRATION_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+                    if (!serviceRegistered) {
+                        throw new RosRuntimeException("Timed out while waiting for service server registration.");
                     }
 
-                    // Create a ROS  Service Client for the specified service name and ROS Service Client Node name
+                    // Create a ROS Service Client for the specified service and node name.
                     final ROSJavaClientNodeMain serviceClientNodeMain = new ROSJavaClientNodeMain(serviceName, clientName);
                     final NodeConfiguration serviceClientNodeConfiguration = getNodeConfiguration(rosHostIp, clientName, rosMasterUri);
                     nodeMainExecutor.execute(serviceClientNodeMain, serviceClientNodeConfiguration);
 
-
-                    // Create a publisher for the specified topic name and publisher name
+                    // Create a publisher for the specified topic name and publisher name.
                     final ROSJavaPublisherNodeMain topicPublisherNodeMain = new ROSJavaPublisherNodeMain(topicName, publisherName);
                     final NodeConfiguration topicPublisherNodeConfiguration = getNodeConfiguration(rosHostIp, publisherName, rosMasterUri);
                     nodeMainExecutor.execute(topicPublisherNodeMain, topicPublisherNodeConfiguration);
 
-                    // Create a subscriber for the specified topic name and publisher name
+                    // Create a subscriber for the specified topic name and subscriber name.
                     final ROSJavaSubscriberNodeMain topicSubscriberNodeMain = new ROSJavaSubscriberNodeMain(topicName, subscriberName);
                     final NodeConfiguration topicSubscriberNodeConfiguration = getNodeConfiguration(rosHostIp, subscriberName, rosMasterUri);
                     nodeMainExecutor.execute(topicSubscriberNodeMain, topicSubscriberNodeConfiguration);
 
+                    // Keep the demo alive long enough to observe service calls and topic traffic.
+                    try {
+                        Thread.sleep(DEMO_DURATION_MILLIS);
+                    } catch (final InterruptedException interruptedException) {
+                        //In this example any interruptedException is ignored
+                    }
 
-
-                //Let the main thread sleep for 30 seconds
-                try {
-                    Thread.sleep(30_000);
-                } catch (final InterruptedException interruptedException) {
-                    //In this example any interruptedException is ignored
+                    // For demonstration purposes we explicitly shut down each node main.
+                    // This is not strictly required because nodeMainExecutor.shutdown() below would also stop them.
+                    nodeMainExecutor.shutdownNodeMain(serviceClientNodeMain);
+                    nodeMainExecutor.shutdownNodeMain(topicSubscriberNodeMain);
+                    nodeMainExecutor.shutdownNodeMain(topicPublisherNodeMain);
+                    nodeMainExecutor.shutdownNodeMain(serviceServerNodeMain);
+                } finally {
+                    // Shutting down the executor is still useful as the final cleanup step.
+                    nodeMainExecutor.shutdown();
                 }
-                //Shut down client
-                nodeMainExecutor.shutdownNodeMain(serviceClientNodeMain);
-                //Shut down subscriber
-                nodeMainExecutor.shutdownNodeMain(topicSubscriberNodeMain);
-                //Shut down publisher
-                nodeMainExecutor.shutdownNodeMain(topicPublisherNodeMain);
-                //Shut down server
-                nodeMainExecutor.shutdownNodeMain(serviceServerNodeMain);
-                //Shut down the executor
-                nodeMainExecutor.shutdown();
 
+            } else {
+                throw new RosRuntimeException("Timed out while waiting for roscore to start.");
             }
         } catch (final Exception exception) {
             //in case of an exception print the stacktrace and exit with EXIT_ERROR(1) value
