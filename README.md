@@ -23,7 +23,8 @@ In order to compile and run this project only Java needs to be installed. [GIT](
 - [Gradle](https://gradle.org/) is used for project compilation. Installing it is not required. The included Gradle wrapper will automatically download the configured Gradle version.
 
 Before running the Gradle commands below, make sure `JAVA_HOME` points to a JDK 21 or later installation and that `java -version` reports Java 21 or later.
-Java 21 is required for the current dependency set. The published `rosjava 0.4.1.1` and `rosjava_actionlib 2026.03.29.02` artifacts are compiled for Java 21 bytecode, so Java 17 or Java 18 will fail to load them with `UnsupportedClassVersionError`.
+Java 21 is required for the current dependency set. 
+
 
 ## Quick Instructions for Windows [Power Shell](https://github.com/PowerShell/PowerShell/releases/)
 1. [Clone](https://git-scm.com/docs/git-clone) the [project repository](https://github.com/SpyrosKou/Plain-ROS-Java-System-Example.git):
