@@ -4,25 +4,33 @@ plugins {
     id 'idea'
 }
 
+application {
+    mainClass = 'eu.spyros.koukas.ros.examples.Main'
+}
 
-mainClassName = "eu.spyros.koukas.ros.examples.Main"
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {//start repositories
     mavenLocal()
     mavenCentral()
     maven {
-        url "https://github.com/SpyrosKou/rosjava_mvn_repo/raw/noetic"
-        name "GithubSpyrosKouRepository"
+        url = uri('https://github.com/SpyrosKou/rosjava_mvn_repo/raw/noetic')
+        name = 'GithubSpyrosKouRepository'
     }
 
 }//end repositories
 
-group 'eu.spyros.koukas.examples.rosjava'
+group = 'eu.spyros.koukas.examples.rosjava'
 version = '0.1-SNAPSHOT'
 
 
-task('runWithExternalRos', dependsOn: 'classes', type: JavaExec) {
-    group 'application'
+tasks.register('runWithExternalRos', JavaExec) {
+    group = 'application'
+    dependsOn tasks.named('classes')
     mainClass = 'eu.spyros.koukas.ros.examples.MainExternal'
     classpath = sourceSets.main.runtimeClasspath
 }
@@ -30,18 +38,17 @@ task('runWithExternalRos', dependsOn: 'classes', type: JavaExec) {
 dependencies {//start dependencies
 
     implementation 'org.ros.rosjava_core:rosjava:0.4.1.1'
+    implementation 'com.github.rosjava:rosjava_actionlib:2026.03.29.02'
+
+    // Logging used directly by the example application.
     implementation 'org.apache.logging.log4j:log4j-api:2.25.4'
     implementation 'org.apache.logging.log4j:log4j-core:2.25.4'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.25.4'
 
-
-    implementation 'org.apache.commons:commons-lang3:3.20.0'
-    implementation 'org.apache.commons:commons-collections4:4.5.0'
-    implementation 'org.apache.commons:commons-configuration2:2.13.0'
-    implementation 'com.google.guava:guava:33.5.0-jre'
-
+    // ROS message, service, and action definitions used directly by the example nodes.
     implementation 'org.ros.rosjava_bootstrap:message_generation:0.3.9'
     implementation 'org.ros.rosjava_messages:std_msgs:0.5.13'
     implementation 'org.ros.rosjava_messages:rosjava_test_msgs:0.3.0'
+    implementation 'org.ros.rosjava_messages:actionlib_tutorials:0.1.10'
 
 }//end dependencies
