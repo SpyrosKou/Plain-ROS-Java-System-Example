@@ -13,6 +13,7 @@
 # Gradle files
 .gradle/
 .gradle-user/
+.gradle-user-home/
 # InteliJ files
 .idea/
 
