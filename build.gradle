@@ -36,8 +36,8 @@ tasks.register('runWithExternalRos', JavaExec) {
 
 dependencies {//start dependencies
 
-    implementation 'org.ros.rosjava_core:rosjava:0.4.1.1'
-    implementation 'com.github.rosjava:rosjava_actionlib:2026.03.29.02'
+    implementation 'org.ros.rosjava_core:rosjava:0.4.1.2'
+    implementation 'com.github.rosjava:rosjava_actionlib:2026.04.17'
 
     // Logging used directly by the example application.
     implementation 'org.apache.logging.log4j:log4j-api:2.25.4'
