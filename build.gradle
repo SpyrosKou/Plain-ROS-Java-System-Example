@@ -15,7 +15,6 @@ java {
 }
 
 repositories {//start repositories
-    mavenLocal()
     mavenCentral()
     maven {
         url = uri('https://github.com/SpyrosKou/rosjava_mvn_repo/raw/noetic')

@@ -7,8 +7,9 @@
 # BlueJ files
 *.ctxt
 
-# Mobile Tools for Java (J2ME)
+# Tmp folders
 .mtj.tmp/
+tmp
 
 # Gradle files
 .gradle/
